@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Refugio para mi Princesita</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:ital,wght@0,600;0,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta Nocturna Premium para la Suite */
+            --bg-dark: #0a0a0c;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-gold: #d4af37; 
+            --glass-bg: rgba(30, 30, 35, 0.6);
+            --glass-border: rgba(212, 175, 55, 0.2);
+            --heart-glow: rgba(214, 106, 106, 0.2);
+        }
+
+        body {
+            margin: 0; padding: 0; 
+            background-color: var(--bg-dark); color: var(--text-main);
+            font-family: 'Lora', serif;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden;
+            background: linear-gradient(135deg, #0a0a0c, #141418, #0a0a0c, #1a1a20);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Botón para volver a la Suite */
+        .back-btn {
+            position: fixed; top: 20px; left: 20px;
+            color: var(--accent-gold); text-decoration: none;
+            font-size: 0.9rem; font-family: sans-serif; letter-spacing: 1px;
+            z-index: 50; opacity: 0.7; transition: opacity 0.3s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .back-btn:active { opacity: 1; }
+
+        .main-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px 25px 25px 25px;
+            width: 88vw; max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 { 
+            font-family: 'Playfair Display', serif; font-size: 2.1rem; 
+            margin: 0 0 8px 0; font-weight: 700; color: var(--accent-gold); 
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .subtitle {
+            font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px;
+        }
+
+        #message-area {
+            min-height: 150px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px;
+            padding: 10px 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            position: relative;
+        }
+
+        p#love-message { 
+            font-size: 1.25rem; line-height: 1.8; margin: 0; 
+            color: #d0d0d0; font-weight: 400; font-style: italic;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        #love-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold); 
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-size: 1.1rem; font-family: 'Playfair Display', serif;
+            font-weight: 600; cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        #love-btn:active { 
+            background: var(--accent-gold); color: #000; transform: scale(0.95); 
+        }
+
+        .heart-bg {
+            position: fixed; bottom: -100px; right: -100px;
+            font-size: 28rem; color: rgba(212, 175, 55, 0.02);
+            z-index: 1; user-select: none;
+            animation: slowFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes slowFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">❮ Menú</a>
+
+    <div class="main-card">
+        <h1>Para mi Princesita</h1>
+        <div class="subtitle">Mi niña hermoshaaa</div>
+
+        <div id="message-area">
+            <p id="love-message">Hola mi niña, este es tu refugio. Cuando me extrañes o el silencio te haga dudar, toca el botón de abajo...</p>
+        </div>
+
+        <button id="love-btn" onclick="generarMensaje()">¿Dudas de mi amor hoy?</button>
+    </div>
+
+    <div class="heart-bg">❤</div>
+
+    <script>
+        // Mazo ampliado a 35 frases románticas, de seguridad y exclusivas para ella
+        const mensajesAmor = [
+            // SOBRE LAS OCUPACIONES Y EL SILENCIO
+            "Princesita, si estoy en silencio, mis manos están en la casa, pero mi mente está en el chat contigo. Te amo un buen.",
+            "Mi amor, neta no te cambiaría por nada del mundo. Mi ocupación nunca es olvido, eres mi prioridad.",
+            "Ahorita estoy a full con las cosas de aquí, pero en mi mente siempre estás tú. Te amo, mi niña hermosa.",
+            "Eres mi motor, mi niña. Echo ganas a todo aquí para que nuestro futuro sea increíble.",
+            "Mis manos están llenas de cosas por hacer, pero mi alma está llena de ti.",
+            "Cada tarea que termino aquí es un pasito más cerca de nuestro futuro. Te amo, princesita.",
+            "El caos de la casa me tiene ocupado, pero tú me tienes enamorado. No lo dudes nunca.",
+            "Puedo estar limpiando o arreglando cosas, pero mi corazón solo piensa en mi princesita hermoshaaa.",
+            "Acuérdate: mi silencio no es falta de interés, es solo el caos del día. Te amo inmensamente.",
+            "Perdón si el chat está frío, princesita, pero mi amor por ti está más caliente que nunca.",
+            "A veces no me dan las manos para escribirte, pero siempre me da el corazón para amarte.",
+            "Perdóname si a veces desaparezco un rato, prometo compensártelo con muchos besos cuando viaje a México.",
+
+            // SEGURIDAD Y VALIDACIÓN
+            "Hola mi niña bonita, nomás pasaba por este rincón para recordarte que eres lo mejor que me ha pasado.",
+            "Mi princesita hermoshaaa, no dudes nunca. Mi silencio es solo físico; mi corazón está siempre contigo.",
+            "Neta, mi princeshaa, no hay nadie más. Mi amor por ti es real, sincero y solo tuyo.",
+            "Gracias por tu paciencia, Princesita. Significa el mundo para mí. Neta eres la mejor.",
+            "Mi día es cien veces mejor cuando te escribo. Te amo muchísimo.",
+            "No importa qué tan pesado esté el día, leer un mensaje tuyo me reinicia la vida.",
+            "Neta no te imaginas lo afortunado que me siento de que seas mi novia. Eres única.",
+            "Que te quede muy claro: eres mi niña, mi princesita, y mi persona favorita en el mundo.",
+            "Si dudabas de mi amor hoy, déjame decirte que hoy te amo el doble que ayer.",
+            "Nunca olvides lo mucho que vales para mí. Eres mi tesoro más grande, mi princesita.",
+
+            // DISTANCIA Y EXTRAÑAR
+            "Quisiera que pudieras escuchar mis pensamientos ahorita... todos tienen que ver contigo.",
+            "Te extraño en cada pausa, en cada respiro. Te amo inmensamente, mi niña hermoshaaa.",
+            "Cada tarea terminada aquí me acerca un poquito más a ti. Falta menos, mi amor.",
+            "Cerrando los ojos te siento cerquita. Te extraño un buen, mi princesita.",
+            "Los kilómetros no son nada comparados con las ganas inmensas que tengo de abrazarte.",
+            "Falta menos para ese vuelo a México. Ese abrazo nos va a curar toda esta distancia.",
+            "Miro el reloj y solo cuento las horas para poder hablar bien contigo. Te extraño, mi niña.",
+            "Si un abrazo pudiera viajar por internet, ya te habría asfixiado de amor.",
+
+            // ROMANCE Y TERNURA
+            "Eres la casualidad más bonita que me ha dado la vida. Te amo un buen.",
+            "Me encantas, de aquí hasta donde estás tú, ida y vuelta a pasitos de caracol.",
+            "Eres la dueña de mis suspiros mientras hago mis deberes.",
+            "Sonrío a la pantalla cada vez que veo una notificación tuya. Me traes loco.",
+            "Eres mi pedacito de cielo en medio de toda mi rutina. Te amo muchísimo, mi princesita hermoshaaa."
+        ];
+
+        let mazo = [];
+
+        function barajar() {
+            // Algoritmo de Fisher-Yates para asegurar que no se repitan hasta agotar las 35
+            mazo = mensajesAmor.map((_, i) => i);
+            for (let i = mazo.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
+            }
+        }
+
+        function generarMensaje() {
+            const messageAreaHTML = document.getElementById('love-message');
+            
+            // Si el mazo se acabó (ya vio las 35 frases), barajamos de nuevo mágicamente
+            if (mazo.length === 0) {
+                barajar();
+            }
+
+            const indice = mazo.pop();
+            
+            messageAreaHTML.style.animation = 'none'; 
+            void messageAreaHTML.offsetWidth; 
+            messageAreaHTML.innerText = mensajesAmor[indice];
+            messageAreaHTML.style.animation = 'slideIn 0.8s ease-out forwards';
+
+            // Vibración háptica en celulares
+            if (navigator.vibrate) {
+                navigator.vibrate([30, 50, 30]); 
+            }
+        }
+
+        // Preparamos la baraja al abrir la página
+        window.onload = barajar;
+    </script>
+</body>
+</html>
+
