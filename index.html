@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nuestra Suite Especial</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,500&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --gold: #d4af37;
+            --text-gray: #a0a0a0;
+            --accent-red: #ff4757;
+        }
+
+        body {
+            margin: 0; padding: 0; background-color: var(--bg-dark);
+            font-family: 'Lora', serif; color: #e0e0e0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+            background: radial-gradient(circle at top right, #1a1a2e 0%, #0a0a0c 100%);
+        }
+
+        header {
+            text-align: center; padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif; font-size: 2.2rem;
+            color: var(--gold); margin: 0; letter-spacing: 1px;
+        }
+
+        .user-greeting {
+            font-size: 0.9rem; color: var(--text-gray);
+            text-transform: uppercase; letter-spacing: 3px; margin-top: 10px;
+        }
+
+        /* Grid de la Suite */
+        .suite-grid {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+            width: 90vw; max-width: 400px; padding-bottom: 50px;
+        }
+
+        /* Estilo de cada Módulo */
+        .module-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 20px; padding: 25px;
+            text-decoration: none; color: inherit;
+            display: flex; align-items: center; gap: 20px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .module-card:active {
+            transform: scale(0.96); background: rgba(212, 175, 55, 0.05);
+            border-color: var(--gold);
+        }
+
+        .icon-box {
+            width: 60px; height: 60px; border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.8rem; border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .module-info h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem;
+            margin: 0; color: #fff; font-weight: 600;
+        }
+
+        .module-info p {
+            font-size: 0.85rem; color: var(--text-gray); margin: 5px 0 0 0;
+            line-height: 1.4;
+        }
+
+        .status-dot {
+            position: absolute; top: 15px; right: 15px;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--gold); box-shadow: 0 0 10px var(--gold);
+        }
+
+        footer {
+            margin-top: auto; padding: 30px; text-align: center;
+            font-size: 0.8rem; color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .red-dot { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="user-greeting">Princesita, bienvenida a</div>
+        <h1>Nuestra Suite</h1>
+    </header>
+
+    <div class="suite-grid">
+        
+        <a href="libro.html" class="module-card">
+            <div class="status-dot"></div>
+            <div class="icon-box">📖</div>
+            <div class="module-info">
+                <h2>Nuestra Historia</h2>
+                <p>Nuestras palabras, capítulos y el plan de nuestro futuro.</p>
+            </div>
+        </a>
+
+        <a href="frases.html" class="module-card">
+            <div class="status-dot"></div>
+            <div class="icon-box">🛡️</div>
+            <div class="module-info">
+                <h2>Refugio de Amor</h2>
+                <p>Para esos momentos en los que me extrañas o dudas.</p>
+            </div>
+        </a>
+
+        <a href="latido.html" class="module-card">
+            <div class="status-dot red-dot"></div>
+            <div class="icon-box">❤</div>
+            <div class="module-info">
+                <h2>Latido Real</h2>
+                <p>Siente mi corazón latiendo por ti en tiempo real.</p>
+            </div>
+        </a>
+
+    </div>
+
+    <footer>
+        DE COLOMBIA PARA MÉXICO<br>
+        SYSTEMS VERSION 1.0
+    </footer>
+
+</body>
+</html>
