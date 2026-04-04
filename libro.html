@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A un vuelo de ti</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --accent-gold: #d4af37; 
+            --glass-bg: rgba(30, 30, 35, 0.6);
+            --heart-color: #d66a6a;
+        }
+
+        body {
+            margin: 0; padding: 0; color: var(--text-main);
+            font-family: 'Lora', serif; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start; height: 100vh; overflow: hidden;
+            padding-top: 8vh;
+            background: linear-gradient(135deg, #0a0a0c, #141418, #0a0a0c, #1a1a20);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Botón para volver a la Suite */
+        .back-btn {
+            position: fixed; top: 20px; left: 20px;
+            color: var(--accent-gold); text-decoration: none;
+            font-size: 0.9rem; font-family: sans-serif; letter-spacing: 1px;
+            z-index: 50; opacity: 0.7; transition: opacity 0.3s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .back-btn:active { opacity: 1; }
+
+        #book-container {
+            position: relative; width: 90vw; max-width: 450px; 
+            height: 75vh; 
+        }
+
+        .page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; visibility: hidden; 
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; 
+            justify-content: flex-start; align-items: center; text-align: center;
+            padding: 10px 20px 100px 20px; 
+            box-sizing: border-box; overflow-y: auto; 
+        }
+
+        .page::-webkit-scrollbar { display: none; }
+
+        .page.active { 
+            opacity: 1; visibility: visible; z-index: 10; 
+            transform: translateY(0);
+        }
+
+        h1 { 
+            font-family: 'Playfair Display', serif; font-size: 2.4rem; 
+            margin-bottom: 5px; font-weight: 600; color: var(--accent-gold); 
+            line-height: 1.2; text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; 
+            margin-bottom: 5px; font-weight: 400; color: var(--text-main);
+        }
+
+        .ornament {
+            font-size: 1.2rem; color: var(--accent-gold);
+            margin-bottom: 20px; opacity: 0.7; user-select: none;
+        }
+
+        .desc-capitulo {
+            display: block; font-size: 1.1rem; color: var(--text-muted); 
+            font-style: italic; margin-top: -10px; margin-bottom: 25px; letter-spacing: 1px;
+        }
+
+        p { 
+            font-size: 1.15rem; line-height: 1.8; margin: 12px 0; 
+            white-space: pre-wrap; color: #c0c0c0; font-weight: 400;
+        }
+
+        /* Estilos de la página final animada */
+        .final-page {
+            justify-content: center;
+            padding-bottom: 40px;
+        }
+
+        .final-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-style: italic;
+            color: var(--accent-gold); line-height: 1.5;
+            margin-bottom: 30px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .heart {
+            font-size: 2.5rem; color: var(--heart-color);
+            animation: latido 1.5s infinite; user-select: none;
+            filter: drop-shadow(0 0 10px rgba(214, 106, 106, 0.5));
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.2); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        .controls { position: fixed; bottom: 45px; display: flex; gap: 40px; z-index: 20; }
+
+        button {
+            background: rgba(30, 30, 35, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            color: var(--accent-gold); width: 60px; height: 60px; border-radius: 50%;
+            font-size: 1.5rem; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+
+        button:active { 
+            background: var(--accent-gold); color: #000; transform: scale(0.9); 
+        }
+        button:disabled { opacity: 0.2; border-color: rgba(255,255,255,0.1); color: #555; }
+
+        .progress { 
+            position: fixed; bottom: 15px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            font-size: 0.75rem; color: #666; letter-spacing: 3px; text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">❮ Menú</a>
+
+    <div id="book-container">
+        
+        <div class="page active" style="justify-content: center; padding-bottom: 20px;">
+            <h1>A un vuelo de ti</h1>
+            <div class="ornament">✧</div>
+            <p style="font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-top: 0;">Un libro para ti</p>
+        </div>
+
+        <div class="page">
+            <h2>Prólogo</h2>
+            <div class="ornament">❦</div>
+            <p>No sé en qué momento exacto pasó.
+No hubo una fecha marcada, ni nos cruzamos por la calle.</p>
+            <p>Pero un día, a través de una pantalla, sin darme cuenta… ya eras importante.
+Y desde entonces, la distancia dejó de tener sentido, porque mi mente se quedó contigo.</p>
+        </div>
+
+        <div class="page">
+            <h2>Capítulo 1</h2>
+            <div class="ornament">❦</div>
+            <span class="desc-capitulo">Cuando apareciste</span>
+            <p>Llegaste como llegan las cosas que no se planean,
+pero que terminan siendo lo más necesario.</p>
+            <p>No sabía que alguien podía hacerme sonreír a tantos kilómetros,
+ni que una simple notificación podía acelerarme el corazón.
+Eras diferente…
+y me atrapaste mucho antes de poder mirarte a los ojos.</p>
+        </div>
+
+        <div class="page">
+            <h2>Capítulo 2</h2>
+            <div class="ornament">❦</div>
+            <span class="desc-capitulo">Lo que provocas en mí</span>
+            <p>No es solo lo que dices,
+es cómo haces que todo se sienta más cercano.
+Contigo, incluso los días normales tienen algo especial.</p>
+            <p>Me gusta cómo hablas, cómo piensas, cómo eres… 
+Me gusta que podemos ser nosotros mismos en cada mensaje, en cada llamada.</p>
+            <p>Y sin darme cuenta, me empezaste a importar más de lo que imaginé.</p>
+        </div>
+
+        <div class="page">
+            <h2>Capítulo 3</h2>
+            <div class="ornament">❦</div>
+            <span class="desc-capitulo">Los pequeños momentos</span>
+            <p>Tal vez aún no tenemos fotos juntos,
+ni paseos de la mano,
+ni escenas de película.</p>
+            <p>Pero tenemos nuestras propias historias.</p>
+            <p>Las llamadas que se alargan,
+los silencios al teléfono que también dicen algo,
+esos momentos simples… que contigo se vuelven únicos.
+Y es ahí donde entendí que la conexión va más allá de lo físico.</p>
+        </div>
+
+        <div class="page">
+            <h2>Capítulo 4</h2>
+            <div class="ornament">❦</div>
+            <span class="desc-capitulo">Lo que siento</span>
+            <p>Amar a la distancia es para valientes,
+es querer abrazarte y tener que conformarme con escuchar tu voz.</p>
+            <p>Es pensarte sin querer,
+es sonreírle a mi celular en público,
+es querer saber de ti en cada instante.</p>
+            <p>No es fácil,
+pero es real. Es sincero.
+Y tú haces que cada kilómetro valga la pena.</p>
+        </div>
+
+        <div class="page">
+            <h2>Capítulo 5</h2>
+            <div class="ornament">❦</div>
+            <span class="desc-capitulo">El destino</span>
+            <p>No sé qué vaya a pasar mañana,
+ni cómo termine esta historia.
+Pero sí tengo un plan muy claro en mi cabeza.</p>
+            <p>Un vuelo desde Colombia.
+Un aterrizaje en México.
+Caminar por el aeropuerto buscándote con la mirada…
+y darte por fin ese primer abrazo que llevamos guardando tanto tiempo.</p>
+        </div>
+
+        <div class="page" style="justify-content: center;">
+            <h2>Epílogo</h2>
+            <div class="ornament">✧</div>
+            <p>Entre todas las personas,
+entre todos los caminos,
+entre todos los países…
+te encontré a ti.</p>
+            <p>Y te prometo que la espera,
+valdrá la pena.</p>
+        </div>
+
+        <div class="page final-page">
+            <div class="final-text">
+                "Te amo mucho mi princesita hermoshaaa y no te cambiaría por nada del mundo"
+            </div>
+            <div class="heart">❤</div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn" onclick="changePage(-1)" disabled>❮</button>
+        <button id="next-btn" onclick="changePage(1)">❯</button>
+    </div>
+
+    <div class="progress" id="progress-text">PÁGINA 1 DE 9</div>
+
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressText = document.getElementById('progress-text');
+
+        function activarPantallaCompleta() {
+            const docElm = document.documentElement;
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen().catch(err => console.log(err));
+            } else if (docElm.webkitRequestFullscreen) {
+                docElm.webkitRequestFullscreen();
+            }
+        }
+
+        function changePage(direction) {
+            // Solicita pantalla completa al avanzar desde la portada
+            if (currentPage === 0 && direction === 1) {
+                activarPantallaCompleta();
+            }
+
+            pages[currentPage].classList.remove('active');
+            pages[currentPage].scrollTop = 0; 
+            
+            currentPage += direction;
+            pages[currentPage].classList.add('active');
+            
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === pages.length - 1;
+            progressText.innerText = `PÁGINA ${currentPage + 1} DE ${pages.length}`;
+        }
+    </script>
+</body>
+</html>
+
